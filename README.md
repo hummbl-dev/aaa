@@ -18,6 +18,7 @@ It excludes runtime orchestration and model routing.
 
 ```bash
 make verify
+make verify-repeat
 ```
 
 ## Layout

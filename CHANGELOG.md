@@ -1,0 +1,45 @@
+# Changelog
+
+All notable changes to this repository are documented here.
+
+## 2026-02-27
+
+### Added
+
+- Initial repository bootstrap with:
+  - normative assurance spec (`SPEC.md`)
+  - deterministic validation report schema
+  - failure-code taxonomy and precedence
+  - canonicalization rules
+  - conformance fixtures `T1-T5`
+  - verifier harness
+  - CI workflow for conformance checks
+
+- Receipt evidence contract hardening:
+  - `receipt.schema.json`
+  - receipt fixtures `R1-R4`
+
+- Compatibility calculus hardening:
+  - `compatibility_rules.md`
+  - `compat_report.schema.json`
+  - compat fixtures `C1-C7`
+
+- Temporal invalidation bridge proof:
+  - fixture `T6_INVALIDATED_BY_EPOCH`
+
+- IP publication boundary:
+  - `conformance/ip_boundary.md`
+
+### Changed
+
+- Verifier upgraded from static fixture hash checks to deterministic derived-evaluation checks for validation, receipt, temporal, and compat fixture suites.
+- CI upgraded to include two-pass determinism check with artifact upload (`verify_run1`, `verify_run2`, `verify_diff`).
+
+### Governance
+
+- `main` branch protection enabled:
+  - required status check: `verify`
+  - 1 approving review required
+  - conversation resolution required
+  - admin enforcement enabled
+  - force-push and branch deletion blocked
