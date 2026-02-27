@@ -14,5 +14,20 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install --upgrade pip
       - run: python -m pip install jsonschema
-      - run: python3 conformance/verify_conformance.py
-      - run: python3 conformance/verify_conformance.py
+      - name: Run verifier (pass 1)
+        run: |
+          mkdir -p artifacts
+          python3 conformance/verify_conformance.py | tee artifacts/verify_run1.txt
+      - name: Run verifier (pass 2)
+        run: |
+          python3 conformance/verify_conformance.py | tee artifacts/verify_run2.txt
+      - name: Compare outputs for determinism
+        run: |
+          diff -u artifacts/verify_run1.txt artifacts/verify_run2.txt > artifacts/verify_diff.txt || true
+          test ! -s artifacts/verify_diff.txt
+      - name: Upload verifier artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: conformance-audit-artifacts
+          path: artifacts/
