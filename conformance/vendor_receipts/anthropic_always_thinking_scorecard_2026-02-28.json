@@ -1,0 +1,35 @@
+{
+  "schema_version": "eal.vendor.feature.scorecard.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "always_thinking",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "task_count_scored": 2,
+  "task_count_excluded_confounds": 1,
+  "confounded": true,
+  "scored_tasks": [
+    {
+      "task_id": "thinking-improves-complex-reasoning",
+      "description": "Verify always-thinking improves output quality on multi-step reasoning tasks",
+      "result": "inconclusive",
+      "notes": "Adaptive thinking already engaged on complex tasks; delta unclear without controlled A/B"
+    },
+    {
+      "task_id": "thinking-latency-cost-impact",
+      "description": "Measure latency and token cost increase with always-thinking enabled",
+      "result": "measured",
+      "notes": "Estimated 30-50% token increase per turn. Latency increase proportional. Confounded by adaptive thinking already providing variable depth."
+    }
+  ],
+  "speedup_ratio": -0.35,
+  "gates": {
+    "reliability_gate": "inconclusive-confounded-data",
+    "value_gate": "inconclusive-confounded-data",
+    "signal_quality_gate": "inconclusive-confounded-data",
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  },
+  "decision": "no-go",
+  "decision_rationale": "Confounded with adaptive thinking (default behavior). Negative speedup ratio (-0.35) due to increased latency and token consumption without measurable quality improvement over adaptive baseline. Requires controlled deconfounded pilot comparing adaptive-only vs always-on before reconsideration. No-go for default promotion."
+}

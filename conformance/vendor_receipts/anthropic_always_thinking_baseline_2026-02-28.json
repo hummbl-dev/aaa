@@ -1,0 +1,17 @@
+{
+  "schema_version": "eal.vendor.feature.baseline.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "always_thinking",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "setting": "alwaysThinkingEnabled=true in settings.json",
+  "description": "Enables extended thinking (chain-of-thought reasoning) on every turn. Claude spends more time reasoning through problems before responding, with interleaved thinking between tool calls.",
+  "baseline_observations": {
+    "without_feature": "Claude uses adaptive thinking which dynamically adjusts reasoning effort. Extended thinking is available but not forced on every turn.",
+    "expected_with_feature": "Every response includes explicit extended thinking. May improve accuracy on complex tasks but increases latency and token consumption.",
+    "measurement_method": "operator_observation",
+    "task_count_baseline_sessions": 2,
+    "notes": "Significant cost and latency implications. Adaptive thinking (default) may already provide equivalent quality. Needs controlled A/B comparison before promotion."
+  }
+}

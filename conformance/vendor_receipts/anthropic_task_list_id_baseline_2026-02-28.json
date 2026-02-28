@@ -1,0 +1,17 @@
+{
+  "schema_version": "eal.vendor.feature.baseline.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "task_list_id",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "setting": "CLAUDE_CODE_TASK_LIST_ID=<shared-id>",
+  "description": "Shares a single task list across multiple Claude Code terminal sessions. Enables cross-terminal task coordination without manual bus polling.",
+  "baseline_observations": {
+    "without_feature": "Each terminal maintains an independent ephemeral task list. Tasks created in one session are invisible to others. Coordination relies on bus STATUS/SITREP messages.",
+    "expected_with_feature": "All terminals sharing the same TASK_LIST_ID see a unified task list. TaskCreate/TaskUpdate from any terminal is immediately visible to all. Reduces coordination overhead for multi-terminal workflows.",
+    "measurement_method": "operator_observation",
+    "task_count_baseline_sessions": 3,
+    "notes": "Feature is an env var toggle with no runtime dependency. Risk surface is limited to task file I/O contention."
+  }
+}

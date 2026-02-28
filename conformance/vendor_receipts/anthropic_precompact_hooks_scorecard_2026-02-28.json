@@ -1,0 +1,35 @@
+{
+  "schema_version": "eal.vendor.feature.scorecard.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "precompact_hooks",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "task_count_scored": 2,
+  "task_count_excluded_confounds": 0,
+  "confounded": false,
+  "scored_tasks": [
+    {
+      "task_id": "precompact-hook-fires",
+      "description": "Verify PreCompact hook executes before context compaction",
+      "result": "pass",
+      "notes": "Hook fires on both manual /compact and auto-compact triggers"
+    },
+    {
+      "task_id": "precompact-transcript-backup",
+      "description": "Verify hook can archive conversation transcript before compaction",
+      "result": "pass",
+      "notes": "Hook receives trigger type (manual/auto) and custom_instructions in payload"
+    }
+  ],
+  "speedup_ratio": 0.0,
+  "gates": {
+    "reliability_gate": true,
+    "value_gate": false,
+    "signal_quality_gate": true,
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  },
+  "decision": "hold",
+  "decision_rationale": "Feature works correctly and improves context preservation safety. Value gate not met (speedup_ratio 0.0 -- this is a safety/resilience feature, not a speed feature). Security gate requires review of hook script permissions. Recommend enabling after writing the PreCompact hook script."
+}

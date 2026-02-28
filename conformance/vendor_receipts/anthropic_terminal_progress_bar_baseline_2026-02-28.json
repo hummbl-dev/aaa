@@ -1,0 +1,17 @@
+{
+  "schema_version": "eal.vendor.feature.baseline.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "terminal_progress_bar",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "setting": "terminalProgressBarEnabled=true in settings.json",
+  "description": "Shows a native terminal progress bar in supported terminals (iTerm2, Windows Terminal) during long-running operations.",
+  "baseline_observations": {
+    "without_feature": "No visual progress indicator during tool execution. Operator relies on spinner text and status line for activity indication.",
+    "expected_with_feature": "Native terminal progress bar renders in iTerm2 during active tool calls. Provides at-a-glance visibility into operation progress.",
+    "measurement_method": "operator_observation",
+    "task_count_baseline_sessions": 1,
+    "notes": "Pure UI feature. No behavioral or security impact. Only affects supported terminals; degrades gracefully in unsupported terminals."
+  }
+}

@@ -161,8 +161,8 @@
     {
       "vendor_id": "anthropic",
       "surface_id": "claude_code_cli",
-      "status": "pending_evidence",
-      "evaluated_at": "2026-02-28T16:10:00+00:00",
+      "status": "evaluated",
+      "evaluated_at": "2026-02-28T16:30:00+00:00",
       "audited_version": "2.1.63 (Claude Code)",
       "profile": "exp_pilot",
       "feature_inventory": [
@@ -184,7 +184,7 @@
         "task_list_id"
       ],
       "default_policy": {
-        "description": "Stable-only default profile; curated experimental toggles remain default-off pending scorecard evidence.",
+        "description": "Stable-only default profile; all experimental toggles remain default-off. No features promoted in phase 1 evaluation.",
         "experimental_flags": {
           "experimental_agent_teams": false,
           "enable_tool_search": false,
@@ -197,9 +197,82 @@
           "task_list_id": false
         }
       },
-      "candidates": [],
+      "candidates": [
+        {
+          "slug": "task_list_id",
+          "task_count_scored": 3,
+          "task_count_excluded_confounds": 0,
+          "confounded": false,
+          "speedup_ratio": 0.15,
+          "gates": {
+            "reliability_gate": true,
+            "value_gate": false,
+            "signal_quality_gate": true,
+            "security_gate": "manual-review-required",
+            "operability_gate": "manual-rollback-drill-required"
+          },
+          "decision": "hold"
+        },
+        {
+          "slug": "precompact_hooks",
+          "task_count_scored": 2,
+          "task_count_excluded_confounds": 0,
+          "confounded": false,
+          "speedup_ratio": 0.0,
+          "gates": {
+            "reliability_gate": true,
+            "value_gate": false,
+            "signal_quality_gate": true,
+            "security_gate": "manual-review-required",
+            "operability_gate": "manual-rollback-drill-required"
+          },
+          "decision": "hold"
+        },
+        {
+          "slug": "terminal_progress_bar",
+          "task_count_scored": 2,
+          "task_count_excluded_confounds": 0,
+          "confounded": false,
+          "speedup_ratio": 0.0,
+          "gates": {
+            "reliability_gate": true,
+            "value_gate": false,
+            "signal_quality_gate": true,
+            "security_gate": "passed",
+            "operability_gate": "passed"
+          },
+          "decision": "hold"
+        },
+        {
+          "slug": "always_thinking",
+          "task_count_scored": 2,
+          "task_count_excluded_confounds": 1,
+          "confounded": true,
+          "speedup_ratio": -0.35,
+          "gates": {
+            "reliability_gate": "inconclusive-confounded-data",
+            "value_gate": "inconclusive-confounded-data",
+            "signal_quality_gate": "inconclusive-confounded-data",
+            "security_gate": "manual-review-required",
+            "operability_gate": "manual-rollback-drill-required"
+          },
+          "decision": "no-go"
+        }
+      ],
       "source_receipts": {
-        "inventory_snapshot": "conformance/vendor_receipts/anthropic_claude_code_inventory_2026-02-28.json"
+        "inventory_snapshot": "conformance/vendor_receipts/anthropic_claude_code_inventory_2026-02-28.json",
+        "baselines": [
+          "conformance/vendor_receipts/anthropic_task_list_id_baseline_2026-02-28.json",
+          "conformance/vendor_receipts/anthropic_precompact_hooks_baseline_2026-02-28.json",
+          "conformance/vendor_receipts/anthropic_terminal_progress_bar_baseline_2026-02-28.json",
+          "conformance/vendor_receipts/anthropic_always_thinking_baseline_2026-02-28.json"
+        ],
+        "scorecards": [
+          "conformance/vendor_receipts/anthropic_task_list_id_scorecard_2026-02-28.json",
+          "conformance/vendor_receipts/anthropic_precompact_hooks_scorecard_2026-02-28.json",
+          "conformance/vendor_receipts/anthropic_terminal_progress_bar_scorecard_2026-02-28.json",
+          "conformance/vendor_receipts/anthropic_always_thinking_scorecard_2026-02-28.json"
+        ]
       },
       "implementation_snapshot": {
         "enabled": [
@@ -224,12 +297,12 @@
         ],
         "priority_next": [
           "task_list_id",
-          "terminal_progress_bar",
           "precompact_hooks",
+          "terminal_progress_bar",
           "always_thinking"
         ]
       },
-      "decision_summary": "Anthropic inventory curated from operator research; maintain pending_evidence until baseline + scorecards are produced."
+      "decision_summary": "Phase 1 evaluation complete for 4 priority features. task_list_id: hold (value gate not met, 0.15 < 0.2). precompact_hooks: hold (safety feature, no speed delta). terminal_progress_bar: hold (UI-only, security/operability gates pass). always_thinking: no-go (confounded with adaptive thinking, -35% speedup). No features promoted to default-on; stable profile remains authoritative."
     },
     {
       "vendor_id": "google",

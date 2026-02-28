@@ -1,0 +1,35 @@
+{
+  "schema_version": "eal.vendor.feature.scorecard.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "terminal_progress_bar",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "task_count_scored": 2,
+  "task_count_excluded_confounds": 0,
+  "confounded": false,
+  "scored_tasks": [
+    {
+      "task_id": "progress-bar-renders",
+      "description": "Verify progress bar renders in iTerm2 during tool execution",
+      "result": "pass",
+      "notes": "iTerm2 on macOS 13.x renders progress indicator correctly"
+    },
+    {
+      "task_id": "graceful-degradation",
+      "description": "Verify no errors or visual artifacts in unsupported terminals",
+      "result": "pass",
+      "notes": "Standard Terminal.app ignores the escape sequences without error"
+    }
+  ],
+  "speedup_ratio": 0.0,
+  "gates": {
+    "reliability_gate": true,
+    "value_gate": false,
+    "signal_quality_gate": true,
+    "security_gate": "passed",
+    "operability_gate": "passed"
+  },
+  "decision": "hold",
+  "decision_rationale": "Feature works correctly and degrades gracefully. Security and operability gates pass (pure UI, no behavioral impact). Value gate not met (speedup_ratio 0.0 -- visibility feature, not speed). Recommend enabling on operator workstation; low risk for default-on but no measurable productivity gain to justify promotion."
+}
