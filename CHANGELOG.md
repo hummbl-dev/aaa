@@ -32,6 +32,10 @@ All notable changes to this repository are documented here.
   sentinel content before upload.
 - Added governance operating model:
   - `OPERATING_MODEL.md` (tag authority, rollback protocol, release receipt checklist)
+- Added release receipt gate tooling:
+  - `scripts/verify_release_receipt.sh`
+  - `make release-receipt TAG=vX.Y.Z`
+  - `cut-release` now enforces successful tag workflows and required assets
 
 ## 2026-02-27
 

@@ -44,4 +44,7 @@ git tag -a "$TAG" -m "release $TAG"
 echo "Pushing tag to origin"
 git push origin "$TAG"
 
+echo "Verifying release receipt gates for $TAG"
+./scripts/verify_release_receipt.sh "$TAG"
+
 echo "Release tag pushed: $TAG"

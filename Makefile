@@ -1,4 +1,4 @@
-.PHONY: verify verify-repeat cli-smoke protection-audit release-check cut-release
+.PHONY: verify verify-repeat cli-smoke protection-audit release-check release-receipt cut-release
 
 verify:
 	python3 conformance/verify_conformance.py
@@ -20,6 +20,10 @@ release-check:
 	$(MAKE) verify
 	$(MAKE) verify-repeat
 	$(MAKE) protection-audit
+
+release-receipt:
+	@test -n "$(TAG)" || (echo "Usage: make release-receipt TAG=vX.Y.Z" >&2; exit 1)
+	./scripts/verify_release_receipt.sh "$(TAG)"
 
 cut-release:
 	@test -n "$(VERSION)" || (echo "Usage: make cut-release VERSION=vX.Y.Z" >&2; exit 1)
