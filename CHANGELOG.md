@@ -38,6 +38,9 @@ All notable changes to this repository are documented here.
   - `cut-release` now enforces successful tag workflows and required assets
 - Fixed release-receipt gate race by waiting for release object creation after
   tag push before evaluating workflows/assets.
+- Added deterministic release receipt manifest publication:
+  - `conformance/release_receipt.schema.json`
+  - `release_receipt.json` emitted by tag workflow and uploaded to release assets
 
 ## 2026-02-27
 

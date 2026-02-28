@@ -67,6 +67,125 @@ jobs:
             artifacts/SHA256SUMS.txt \
             --clobber
 
+      - name: Resolve conformance run metadata
+        id: conformance_meta
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          timeout="${RELEASE_RECEIPT_TIMEOUT_SECONDS:-600}"
+          poll="${RELEASE_RECEIPT_POLL_SECONDS:-5}"
+          deadline=$((SECONDS + timeout))
+
+          while true; do
+            run_json="$(gh run list \
+              --repo "$GITHUB_REPOSITORY" \
+              --workflow conformance \
+              --branch "$tag" \
+              --event push \
+              --limit 1 \
+              --json databaseId,status,conclusion,url)"
+
+            run_id="$(jq -r '.[0].databaseId // empty' <<<"$run_json")"
+            if [[ -z "$run_id" ]]; then
+              if (( SECONDS >= deadline )); then
+                echo "Timed out waiting for conformance run for tag ${tag}" >&2
+                exit 1
+              fi
+              sleep "$poll"
+              continue
+            fi
+
+            status="$(jq -r '.[0].status' <<<"$run_json")"
+            conclusion="$(jq -r '.[0].conclusion // \"\"' <<<"$run_json")"
+            run_url="$(jq -r '.[0].url // \"\"' <<<"$run_json")"
+
+            if [[ "$status" != "completed" ]]; then
+              if (( SECONDS >= deadline )); then
+                echo "Timed out waiting for conformance run completion for tag ${tag}" >&2
+                exit 1
+              fi
+              sleep "$poll"
+              continue
+            fi
+
+            if [[ "$conclusion" != "success" ]]; then
+              echo "Conformance run is not successful for tag ${tag}: ${conclusion}" >&2
+              exit 1
+            fi
+
+            {
+              echo "run_id=${run_id}"
+              echo "run_url=${run_url}"
+            } >> "$GITHUB_OUTPUT"
+            break
+          done
+
+      - name: Generate release receipt manifest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          release_json="$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url,assets)"
+          release_url="$(jq -r '.url' <<<"$release_json")"
+          assets_json="$(jq -c '[.assets[] | select(.name != "release_receipt.json") | {name, size, digest, url}] | sort_by(.name)' <<<"$release_json")"
+
+          jq -n \
+            --arg tag "$tag" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg commit_sha "$GITHUB_SHA" \
+            --arg release_url "$release_url" \
+            --argjson conformance_run_id "${{ steps.conformance_meta.outputs.run_id }}" \
+            --arg conformance_run_url "${{ steps.conformance_meta.outputs.run_url }}" \
+            --argjson release_artifacts_run_id "${{ github.run_id }}" \
+            --arg release_artifacts_run_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --argjson assets "$assets_json" \
+            '{
+              schema_version: "eal.release.receipt.v1",
+              tag: $tag,
+              repository: $repository,
+              commit_sha: $commit_sha,
+              release_url: $release_url,
+              conformance_run: {
+                run_id: $conformance_run_id,
+                url: $conformance_run_url,
+                conclusion: "success"
+              },
+              release_artifacts_run: {
+                run_id: $release_artifacts_run_id,
+                url: $release_artifacts_run_url,
+                conclusion: "success"
+              },
+              assets: $assets
+            }' > artifacts/release_receipt.base.json
+
+          manifest_hash="$(jq -cS . artifacts/release_receipt.base.json | tr -d '\n' | sha256sum | awk '{print $1}')"
+          jq --arg manifest_hash "$manifest_hash" \
+            '. + {manifest_c14n_sha256: $manifest_hash}' \
+            artifacts/release_receipt.base.json > artifacts/release_receipt.json
+          rm artifacts/release_receipt.base.json
+
+      - name: Validate release receipt schema
+        run: |
+          python3 - <<'PY'
+          import json
+          from jsonschema import validate
+
+          with open("conformance/release_receipt.schema.json", "r", encoding="utf-8") as f:
+              schema = json.load(f)
+          with open("artifacts/release_receipt.json", "r", encoding="utf-8") as f:
+              receipt = json.load(f)
+
+          validate(instance=receipt, schema=schema)
+          PY
+
+      - name: Upload release receipt manifest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          gh release upload "$tag" artifacts/release_receipt.json --clobber
+
       - name: Upload workflow artifacts
         if: always()
         uses: actions/upload-artifact@v4

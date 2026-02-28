@@ -74,6 +74,7 @@ A release is valid only when all checks below pass.
    - `verify_run2.txt`
    - `verify_diff.txt` (expected `NO_DIFF` when clean)
    - `SHA256SUMS.txt`
+   - `release_receipt.json`
 6. Determinism evidence:
    - `verify_run1.txt` and `verify_run2.txt` hashes match
    - `verify_diff.txt` indicates no drift

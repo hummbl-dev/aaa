@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hummbl.dev/schemas/eal.release.receipt.v1.json",
+  "title": "EAL Release Receipt v1",
+  "description": "Deterministic release receipt manifest for tag governance evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "tag",
+    "repository",
+    "commit_sha",
+    "release_url",
+    "conformance_run",
+    "release_artifacts_run",
+    "assets",
+    "manifest_c14n_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "eal.release.receipt.v1"
+    },
+    "tag": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+([-.][A-Za-z0-9]+)?$"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "commit_sha": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "release_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "conformance_run": {
+      "$ref": "#/$defs/workflow_run"
+    },
+    "release_artifacts_run": {
+      "$ref": "#/$defs/workflow_run"
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "manifest_c14n_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "$defs": {
+    "workflow_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "url",
+        "conclusion"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "conclusion": {
+          "type": "string",
+          "const": "success"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "size",
+        "digest",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    }
+  }
+}
