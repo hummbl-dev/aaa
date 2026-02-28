@@ -6,6 +6,15 @@ All notable changes to this repository are documented here.
 
 ### Added
 
+- Anthropic Claude Code CLI feature gate evaluation (phase 1):
+  - Evaluated 4 priority features: task_list_id, precompact_hooks, terminal_progress_bar, always_thinking
+  - Added 8 evidence receipts (baseline + scorecard per feature) under `conformance/vendor_receipts/`
+  - Promoted anthropic/claude_code_cli from `pending_evidence` to `evaluated` with conservative decisions
+  - Decisions: task_list_id=hold, precompact_hooks=hold, terminal_progress_bar=hold, always_thinking=no-go
+  - No features promoted to default-on; stable profile remains authoritative
+
+### Added
+
 - Deterministic CLI implementation:
   - `./eal verify-receipt --contract ... --receipt ...`
   - `./eal revalidate --contract-origin ... --contract-target ... --receipt ...`

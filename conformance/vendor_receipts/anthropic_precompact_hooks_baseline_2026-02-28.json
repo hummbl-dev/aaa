@@ -1,0 +1,17 @@
+{
+  "schema_version": "eal.vendor.feature.baseline.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "precompact_hooks",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "setting": "hooks.PreCompact in ~/.claude/settings.json",
+  "description": "Runs user-defined hook scripts before Claude Code compacts conversation history. Enables context preservation, transcript backup, and handover documentation before context loss.",
+  "baseline_observations": {
+    "without_feature": "Context compaction occurs silently. SessionStart hook re-injects standing rules but prior conversation context is lost. No transcript backup mechanism.",
+    "expected_with_feature": "PreCompact hook fires before compaction, allowing scripts to archive transcript, emit a bus SITREP, or save working state. Complements existing SessionStart re-injection.",
+    "measurement_method": "operator_observation",
+    "task_count_baseline_sessions": 2,
+    "notes": "Hook system is already wired (7 hooks active). PreCompact is an additional event type in the same framework. Low integration risk."
+  }
+}

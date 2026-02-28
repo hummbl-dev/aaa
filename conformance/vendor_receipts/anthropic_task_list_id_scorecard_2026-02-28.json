@@ -1,0 +1,41 @@
+{
+  "schema_version": "eal.vendor.feature.scorecard.v1",
+  "vendor_id": "anthropic",
+  "surface_id": "claude_code_cli",
+  "feature_slug": "task_list_id",
+  "recorded_at": "2026-02-28T16:30:00+00:00",
+  "audited_version": "2.1.63 (Claude Code)",
+  "task_count_scored": 3,
+  "task_count_excluded_confounds": 0,
+  "confounded": false,
+  "scored_tasks": [
+    {
+      "task_id": "multi-terminal-task-visibility",
+      "description": "Verify tasks created in terminal A appear in terminal B with shared TASK_LIST_ID",
+      "result": "pass",
+      "notes": "Confirmed via 3-terminal session on 2026-02-28"
+    },
+    {
+      "task_id": "task-update-propagation",
+      "description": "Verify TaskUpdate (status change) from one terminal is reflected in TaskList from another",
+      "result": "pass",
+      "notes": "Status transitions propagated within same filesystem read"
+    },
+    {
+      "task_id": "independent-without-id",
+      "description": "Verify terminals without TASK_LIST_ID maintain independent lists (no cross-contamination)",
+      "result": "pass",
+      "notes": "Default behavior preserved when env var unset"
+    }
+  ],
+  "speedup_ratio": 0.15,
+  "gates": {
+    "reliability_gate": true,
+    "value_gate": false,
+    "signal_quality_gate": true,
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  },
+  "decision": "hold",
+  "decision_rationale": "Functionality works as expected and improves coordination visibility. Value gate not met (speedup_ratio 0.15 < 0.2 threshold). Security and operability gates pending manual review. Recommend enabling on operator workstation as pilot before default-on promotion."
+}
