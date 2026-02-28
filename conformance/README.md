@@ -8,6 +8,7 @@ Supporting artifacts:
 - `validation_report.schema.json`: canonical report schema (`eal.validation.report.v1`)
 - `receipt.schema.json`: minimal deterministic receipt schema (`eal.receipt.v1`)
 - `compat_report.schema.json`: compatibility report schema (`eal.compat.report.v1`)
+- `release_receipt.schema.json`: release governance manifest schema (`eal.release.receipt.v1`)
 - `compatibility_rules.md`: deterministic Compat calculus and reason precedence
 - `CANONICALIZATION.md`: canonical JSON and hashing rules
 - `ip_boundary.md`: allowed vs non-publishable artifact matrix
