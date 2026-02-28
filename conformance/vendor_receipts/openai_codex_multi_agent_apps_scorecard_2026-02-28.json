@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-02-28T15:56:52.073204+00:00",
+  "baseline_path": "/Users/others/_state/codex_feature_pilot/latest-baseline.json",
+  "candidate_path": "/Users/others/_state/codex_feature_pilot/latest-feature-multi_agent-apps.json",
+  "task_count_aligned": 4,
+  "task_count_scored": 4,
+  "task_count_excluded_confounds": 0,
+  "excluded_confounds": [],
+  "confounded": false,
+  "baseline_median_duration_sec": 80.572,
+  "candidate_median_duration_sec": 88.963,
+  "speedup_ratio": -0.1041,
+  "baseline_failure_rate": 0.0,
+  "candidate_failure_rate": 0.0,
+  "baseline_signal_match_rate": 1.0,
+  "candidate_signal_match_rate": 1.0,
+  "gates": {
+    "reliability_gate": true,
+    "value_gate": false,
+    "signal_quality_gate": true,
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  }
+}
