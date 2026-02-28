@@ -42,6 +42,10 @@ All notable changes to this repository are documented here.
   - `conformance/release_receipt.schema.json`
   - `release_receipt.json` emitted by tag workflow and uploaded to release assets
 - Fixed release manifest workflow parsing bug in conformance-run metadata step.
+- Added adversarial temporal conformance fixtures:
+  - `T8_TEMPORAL_ORIGIN_INVALID_SIGNATURE`
+  - `T9_TEMPORAL_EPOCH_AMBIGUOUS`
+  - `T10_TEMPORAL_CONTRACT_COLLISION_PRECEDENCE`
 
 ## 2026-02-27
 

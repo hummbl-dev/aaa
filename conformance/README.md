@@ -25,7 +25,7 @@ Fixture sets:
 
 - `fixtures/`: validation fixtures (`T1-T5`)
 - `fixtures_receipt/`: receipt determinism fixtures (`R1-R5`)
-- `fixtures_temporal/`: epoch bridge fixtures (`T6-T7`)
+- `fixtures_temporal/`: epoch bridge and adversarial fixtures (`T6-T10`)
 - `fixtures_compat/`: compatibility calculus fixtures (`C1-C9`)
 
 Canonicalization rule:
