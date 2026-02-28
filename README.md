@@ -29,6 +29,7 @@ Run from repo root:
 
 ```bash
 ./eal verify-receipt --contract contract.json --receipt receipt.json
+./eal revalidate --contract-origin contract_e1.json --contract-target contract_e2.json --receipt receipt.json
 ./eal compat --contract-a contract_a.json --contract-b contract_b.json
 ```
 
@@ -42,6 +43,7 @@ Flags:
 Exit codes:
 
 - `verify-receipt`: `0=VALID`, `10=INVALID`, `11=INVALIDATED`, `12=INDETERMINATE`
+- `revalidate`: `0=VALID`, `10=INVALID`, `11=INVALIDATED`, `12=INDETERMINATE`
 - `compat`: `0=BACKWARD_COMPATIBLE`, `20=CONDITIONAL`, `21=INCOMPATIBLE`
 
 ## Layout

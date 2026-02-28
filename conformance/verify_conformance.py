@@ -9,7 +9,8 @@ Checks:
 - receipt fixtures: receipt schema validity + deterministic evaluator parity
 - temporal fixture: INVALIDATED-by-epoch bridge proof
 - compat fixtures: deterministic classifier parity
-- CLI parity: `eal verify-receipt` and `eal compat` match fixture outputs/exit codes
+- CLI parity: `eal verify-receipt`, `eal revalidate`, and `eal compat`
+  match fixture outputs/exit codes
 """
 
 from __future__ import annotations
@@ -36,6 +37,7 @@ from aaa_eal.core import (  # noqa: E402
     VALIDATION_EXIT_CODES,
     canonical_json_bytes,
     evaluate_compat,
+    evaluate_temporal_validation,
     evaluate_validation,
     sha256_hex,
 )
@@ -78,43 +80,6 @@ def verify_report(
     digest = sha256_hex(report)
     if digest != declared_hash:
         raise ValueError(f"{name}: hash mismatch {digest} != {declared_hash}")
-
-
-def evaluate_temporal(inputs: dict[str, Any]) -> dict[str, Any]:
-    contract_a = inputs["contract_a"]
-    contract_b = inputs["contract_b"]
-    receipt = inputs["receipt"]
-
-    action_ids = [entry["action_id"] for entry in receipt["actions"]]
-    a_actions = set(contract_a["action_space"])
-    b_actions = set(contract_b["action_space"])
-
-    if not all(action_id in a_actions for action_id in action_ids):
-        classification, code = "INVALID", "E_ACTION_OUT_OF_SPACE"
-    elif not all(action_id in b_actions for action_id in action_ids):
-        classification, code = "INVALIDATED", "E_EPOCH_INVALIDATED"
-    else:
-        classification, code = "VALID", "E_OK_VALID"
-
-    report = {
-        "schema_version": "eal.validation.report.v1",
-        "classification": classification,
-        "primary_reason_code": code,
-        "reason_codes": [code],
-        "contract_ref": {
-            "contract_id": contract_b["contract_id"],
-            "contract_hash": f"sha256:{contract_b['contract_sha256']}",
-        },
-        "receipt_ref": {
-            "receipt_id": receipt["execution_id"],
-            "receipt_hash": f"sha256:{receipt['integrity']['receipt_c14n_sha256']}",
-        },
-        "evaluated_epoch": contract_b["epoch_number"],
-        "validator_profile": "eal-fixture-profile-v1",
-    }
-    if classification == "INVALIDATED":
-        report["origin_epoch"] = contract_a["epoch_number"]
-    return report
 
 
 def verify_validation_fixtures(base: Path, validation_schema: dict[str, Any]) -> None:
@@ -191,18 +156,25 @@ def verify_temporal_fixtures(
             fixture = json.load(fh)
 
         validate(instance=fixture["inputs"]["receipt"], schema=receipt_schema)
+        expected_report = fixture["expected_report"]
 
         compat_report = evaluate_compat(
             fixture["inputs"]["contract_a"],
             fixture["inputs"]["contract_b"],
         )
-        if compat_report["classification"] == "BACKWARD_COMPATIBLE":
+        if (
+            expected_report["classification"] == "INVALIDATED"
+            and compat_report["classification"] == "BACKWARD_COMPATIBLE"
+        ):
             raise ValueError(
                 f"{fixture_path.name}: temporal invalidation fixture requires non-backward compatibility"
             )
 
-        expected_report = fixture["expected_report"]
-        derived_report = evaluate_temporal(fixture["inputs"])
+        derived_report = evaluate_temporal_validation(
+            fixture["inputs"]["contract_a"],
+            fixture["inputs"]["contract_b"],
+            fixture["inputs"]["receipt"],
+        )
         if derived_report != expected_report:
             raise ValueError(
                 f"{fixture_path.name}: derived temporal report does not match expected_report"
@@ -374,6 +346,68 @@ def verify_cli_compat_fixtures(base: Path) -> None:
         print(f"PASS {fixture_path.name} (cli)")
 
 
+def verify_cli_temporal_fixtures(base: Path) -> None:
+    fixture_paths = sorted(Path(p) for p in glob.glob(str(base / "fixtures_temporal" / "*.json")))
+    if not fixture_paths:
+        raise ValueError("no temporal fixtures found for CLI parity")
+
+    for fixture_path in fixture_paths:
+        with fixture_path.open("r", encoding="utf-8") as fh:
+            fixture = json.load(fh)
+
+        expected = fixture["expected_report"]
+        expected_exit_code = VALIDATION_EXIT_CODES[expected["classification"]]
+        expected_serialized = canonical_json_bytes(expected)
+
+        with tempfile.TemporaryDirectory(prefix="eal-cli-") as tmpdir:
+            tmp = Path(tmpdir)
+            contract_origin_path = tmp / "contract_origin.json"
+            contract_target_path = tmp / "contract_target.json"
+            receipt_path = tmp / "receipt.json"
+            out_path = tmp / "report.json"
+
+            contract_origin_path.write_text(
+                json.dumps(fixture["inputs"]["contract_a"]),
+                encoding="utf-8",
+            )
+            contract_target_path.write_text(
+                json.dumps(fixture["inputs"]["contract_b"]),
+                encoding="utf-8",
+            )
+            receipt_path.write_text(json.dumps(fixture["inputs"]["receipt"]), encoding="utf-8")
+
+            stdout_bytes = _run_cli(
+                [
+                    str(ROOT / "eal"),
+                    "revalidate",
+                    "--contract-origin",
+                    str(contract_origin_path),
+                    "--contract-target",
+                    str(contract_target_path),
+                    "--receipt",
+                    str(receipt_path),
+                    "--schema-check",
+                    "--out",
+                    str(out_path),
+                ],
+                expected_exit_code,
+                fixture_path.name,
+            )
+
+            if stdout_bytes != expected_serialized:
+                raise ValueError(f"{fixture_path.name}: CLI stdout canonical JSON mismatch")
+
+            parsed_stdout = json.loads(stdout_bytes.decode("utf-8"))
+            if parsed_stdout != expected:
+                raise ValueError(f"{fixture_path.name}: CLI stdout parsed report mismatch")
+
+            out_bytes = out_path.read_bytes()
+            if out_bytes != expected_serialized:
+                raise ValueError(f"{fixture_path.name}: CLI --out payload mismatch")
+
+        print(f"PASS {fixture_path.name} (cli)")
+
+
 def main() -> int:
     base = Path(__file__).resolve().parent
 
@@ -389,6 +423,7 @@ def main() -> int:
     verify_temporal_fixtures(base, validation_schema, receipt_schema)
     verify_compat_fixtures(base, compat_schema)
     verify_cli_receipt_fixtures(base)
+    verify_cli_temporal_fixtures(base)
     verify_cli_compat_fixtures(base)
     return 0
 
