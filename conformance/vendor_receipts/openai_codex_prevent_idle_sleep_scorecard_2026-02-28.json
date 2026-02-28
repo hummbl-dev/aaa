@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-02-28T15:56:52.204703+00:00",
+  "baseline_path": "/Users/others/_state/codex_feature_pilot/latest-baseline.json",
+  "candidate_path": "/Users/others/_state/codex_feature_pilot/latest-feature-prevent_idle_sleep.json",
+  "task_count_aligned": 4,
+  "task_count_scored": 3,
+  "task_count_excluded_confounds": 1,
+  "excluded_confounds": [
+    {
+      "task_id": "adapter_failure_mode_review",
+      "baseline_confound": null,
+      "candidate_confound": "rate_limit"
+    }
+  ],
+  "confounded": true,
+  "baseline_median_duration_sec": 71.185,
+  "candidate_median_duration_sec": 79.16,
+  "speedup_ratio": -0.112,
+  "baseline_failure_rate": 0.0,
+  "candidate_failure_rate": 0.0,
+  "baseline_signal_match_rate": 1.0,
+  "candidate_signal_match_rate": 1.0,
+  "gates": {
+    "reliability_gate": "inconclusive-confounded-data",
+    "value_gate": "inconclusive-confounded-data",
+    "signal_quality_gate": "inconclusive-confounded-data",
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  }
+}
