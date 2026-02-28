@@ -20,6 +20,18 @@ Use semantic version tags: `vMAJOR.MINOR.PATCH`.
 make cut-release VERSION=vX.Y.Z
 ```
 
+`cut-release` now blocks until release governance receipts pass for the tag:
+
+- `conformance` workflow succeeded on the tag push
+- `release-artifacts` workflow succeeded on the tag push
+- required release assets are present
+
+Manual receipt check:
+
+```bash
+make release-receipt TAG=vX.Y.Z
+```
+
 ## Tag Artifact Automation
 
 Pushing a `v*` tag triggers `.github/workflows/release-artifacts.yml` which:

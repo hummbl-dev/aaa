@@ -67,14 +67,16 @@ A release is valid only when all checks below pass.
 3. Tag push triggers:
    - `conformance` workflow success
    - `release-artifacts` workflow success
-4. Release assets present:
+4. Receipt gate command passes:
+   - `make release-receipt TAG=<tag>`
+5. Release assets present:
    - `verify_run1.txt`
    - `verify_run2.txt`
    - `verify_diff.txt` (expected `NO_DIFF` when clean)
    - `SHA256SUMS.txt`
-5. Determinism evidence:
+6. Determinism evidence:
    - `verify_run1.txt` and `verify_run2.txt` hashes match
    - `verify_diff.txt` indicates no drift
-6. Governance record updated:
+7. Governance record updated:
    - changelog entry present
    - milestone/issues updated as appropriate

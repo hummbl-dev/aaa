@@ -21,6 +21,8 @@ make verify
 make verify-repeat
 make protection-audit
 make release-check
+# after a tag push
+make release-receipt TAG=vX.Y.Z
 ```
 
 ## CLI
