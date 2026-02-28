@@ -12,6 +12,7 @@ from aaa_eal.core import (
     COMPAT_EXIT_CODES,
     VALIDATION_EXIT_CODES,
     evaluate_compat,
+    evaluate_temporal_validation,
     evaluate_validation,
     render_json,
     sha256_hex,
@@ -127,6 +128,58 @@ def cmd_compat(args: argparse.Namespace) -> int:
     return COMPAT_EXIT_CODES[report["classification"]]
 
 
+def cmd_revalidate(args: argparse.Namespace) -> int:
+    contract_origin: dict[str, Any]
+    contract_target: dict[str, Any]
+    receipt: dict[str, Any]
+
+    parse_errors: list[str] = []
+
+    try:
+        contract_origin = _load_json_object(Path(args.contract_origin))
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        contract_origin = {}
+        parse_errors.append(f"contract-origin read error: {exc}")
+
+    try:
+        contract_target = _load_json_object(Path(args.contract_target))
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        contract_target = {}
+        parse_errors.append(f"contract-target read error: {exc}")
+
+    try:
+        receipt = _load_json_object(Path(args.receipt))
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        receipt = {}
+        parse_errors.append(f"receipt read error: {exc}")
+
+    report = evaluate_temporal_validation(contract_origin, contract_target, receipt)
+
+    if args.schema_check:
+        try:
+            _maybe_schema_validate(
+                report,
+                schema_path=Path(__file__).resolve().parent.parent
+                / "conformance"
+                / "validation_report.schema.json",
+            )
+        except Exception as exc:  # noqa: BLE001 - deterministic CLI error contract
+            print(f"schema validation error: {exc}", file=sys.stderr)
+            return 65
+
+    if parse_errors:
+        for error in parse_errors:
+            print(error, file=sys.stderr)
+
+    serialized = render_json(report, canonical=not args.pretty)
+    _write_output(serialized, Path(args.out) if args.out else None)
+
+    if args.print_hash:
+        print(sha256_hex(report), file=sys.stderr)
+
+    return VALIDATION_EXIT_CODES[report["classification"]]
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="eal",
@@ -181,6 +234,39 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate output JSON against conformance schema",
     )
     compat_parser.set_defaults(func=cmd_compat)
+
+    revalidate_parser = subparsers.add_parser(
+        "revalidate",
+        help="Revalidate a receipt from origin contract to target contract epoch",
+    )
+    revalidate_parser.add_argument("--receipt", required=True, help="Path to receipt JSON")
+    revalidate_parser.add_argument(
+        "--contract-origin",
+        required=True,
+        help="Path to origin contract JSON",
+    )
+    revalidate_parser.add_argument(
+        "--contract-target",
+        required=True,
+        help="Path to target contract JSON",
+    )
+    revalidate_parser.add_argument("--out", help="Optional path for report output")
+    revalidate_parser.add_argument(
+        "--pretty",
+        action="store_true",
+        help="Pretty-print output JSON instead of canonical compact JSON",
+    )
+    revalidate_parser.add_argument(
+        "--print-hash",
+        action="store_true",
+        help="Print report SHA-256 to stderr",
+    )
+    revalidate_parser.add_argument(
+        "--schema-check",
+        action="store_true",
+        help="Validate output JSON against conformance schema",
+    )
+    revalidate_parser.set_defaults(func=cmd_revalidate)
 
     return parser
 

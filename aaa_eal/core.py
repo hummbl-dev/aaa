@@ -466,6 +466,77 @@ def evaluate_validation(
     }
 
 
+def evaluate_temporal_validation(
+    contract_origin: dict[str, Any],
+    contract_target: dict[str, Any],
+    receipt: dict[str, Any],
+    *,
+    validator_profile: str = EAL_PROFILE,
+) -> dict[str, Any]:
+    """Evaluate a receipt across governance epochs.
+
+    The receipt must first be valid under the origin contract. If origin
+    validation fails, that origin result is returned. If origin validation
+    passes but target action-space closure fails, classification is
+    INVALIDATED with E_EPOCH_INVALIDATED.
+    """
+
+    origin_report = evaluate_validation(
+        contract_origin,
+        receipt,
+        validator_profile=validator_profile,
+    )
+    if origin_report["classification"] != "VALID":
+        return origin_report
+
+    try:
+        n_target = normalize_validation_contract(contract_target)
+        n_receipt = normalize_validation_receipt(receipt)
+    except ValueError:
+        return _validation_malformed_report(validator_profile)
+
+    target_actions = set(n_target.action_space)
+    action_ids = [action.action_id for action in n_receipt.actions]
+
+    if any(action_id not in target_actions for action_id in action_ids):
+        report: dict[str, Any] = {
+            "schema_version": "eal.validation.report.v1",
+            "classification": "INVALIDATED",
+            "primary_reason_code": "E_EPOCH_INVALIDATED",
+            "reason_codes": ["E_EPOCH_INVALIDATED"],
+            "contract_ref": {
+                "contract_id": n_target.contract_id,
+                "contract_hash": n_target.contract_hash,
+            },
+            "receipt_ref": {
+                "receipt_id": n_receipt.receipt_id,
+                "receipt_hash": n_receipt.receipt_hash,
+            },
+            "evaluated_epoch": n_target.epoch_number if n_target.epoch_number is not None else 0,
+            "validator_profile": validator_profile,
+        }
+        if n_receipt.epoch_number is not None:
+            report["origin_epoch"] = n_receipt.epoch_number
+        return report
+
+    return {
+        "schema_version": "eal.validation.report.v1",
+        "classification": "VALID",
+        "primary_reason_code": "E_OK_VALID",
+        "reason_codes": ["E_OK_VALID"],
+        "contract_ref": {
+            "contract_id": n_target.contract_id,
+            "contract_hash": n_target.contract_hash,
+        },
+        "receipt_ref": {
+            "receipt_id": n_receipt.receipt_id,
+            "receipt_hash": n_receipt.receipt_hash,
+        },
+        "evaluated_epoch": n_target.epoch_number if n_target.epoch_number is not None else 0,
+        "validator_profile": validator_profile,
+    }
+
+
 def normalize_compat_contract(contract: dict[str, Any]) -> NormalizedCompatContract:
     if not isinstance(contract, dict):
         raise ValueError("contract must be object")

@@ -8,6 +8,7 @@ All notable changes to this repository are documented here.
 
 - Deterministic CLI implementation:
   - `./eal verify-receipt --contract ... --receipt ...`
+  - `./eal revalidate --contract-origin ... --contract-target ... --receipt ...`
   - `./eal compat --contract-a ... --contract-b ...`
 - Shared core evaluator module:
   - `aaa_eal/core.py`
@@ -17,7 +18,9 @@ All notable changes to this repository are documented here.
 ### Changed
 
 - `conformance/verify_conformance.py` now validates CLI parity against fixture
-  expected reports and expected exit codes.
+  expected reports and expected exit codes, including temporal `revalidate`.
+- Added temporal validation fixture coverage:
+  - `T7_VALID_BY_EPOCH` (valid cross-epoch carry-forward)
 - Added multi-reason precedence fixtures for validation and compatibility:
   - `R5_RECEIPT_MULTI_REASON_INVALID`
   - `C8_MULTI_REASON_INCOMPATIBLE`

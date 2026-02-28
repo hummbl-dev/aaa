@@ -10,6 +10,7 @@ verify-repeat:
 
 cli-smoke:
 	./eal verify-receipt --help >/dev/null
+	./eal revalidate --help >/dev/null
 	./eal compat --help >/dev/null
 
 protection-audit:
