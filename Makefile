@@ -1,4 +1,4 @@
-.PHONY: verify verify-repeat cli-smoke feature-gate feature-gate-live vendor-scan vendor-scan-sync protection-audit release-check release-receipt cut-release
+.PHONY: verify verify-repeat verify-tvs verify-pinned verify-precedence cli-smoke feature-gate feature-gate-live vendor-scan vendor-scan-sync protection-audit release-check release-receipt cut-release
 
 verify:
 	python3 conformance/verify_conformance.py
@@ -7,6 +7,22 @@ verify-repeat:
 	python3 conformance/verify_conformance.py > /tmp/aaa_verify_run1.txt
 	python3 conformance/verify_conformance.py > /tmp/aaa_verify_run2.txt
 	diff -u /tmp/aaa_verify_run1.txt /tmp/aaa_verify_run2.txt
+
+verify-tvs:
+	python3 spec/verify_test_vectors.py
+
+verify-pinned:
+	python3 spec/verify_pinned_artifacts.py
+
+verify-precedence:
+	@python3 -c "\
+	import json, sys; \
+	sys.path.insert(0, '.'); \
+	from aaa_eal.core import EAL_PRECEDENCE; \
+	pinned = json.load(open('spec/failure/failure_precedence_v1.json'))['precedence']; \
+	ok = list(EAL_PRECEDENCE) == pinned; \
+	print('PASS' if ok else 'FAIL: EAL_PRECEDENCE != pinned artifact'); \
+	sys.exit(0 if ok else 1)"
 
 cli-smoke:
 	./eal verify-receipt --help >/dev/null
@@ -32,6 +48,9 @@ protection-audit:
 release-check:
 	$(MAKE) verify
 	$(MAKE) verify-repeat
+	$(MAKE) verify-tvs
+	$(MAKE) verify-pinned
+	$(MAKE) verify-precedence
 	$(MAKE) feature-gate
 	$(MAKE) protection-audit
 

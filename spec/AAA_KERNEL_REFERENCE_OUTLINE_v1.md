@@ -61,14 +61,9 @@
 **Responsibility:**
 - Convert validated IC into canonical byte stream.
 
-**Normative canonicalization rules:**
-- Object keys: lexicographic ordering (Unicode codepoint).
-- Arrays: preserve order.
-- Strings: UTF-8; no NFC normalization unless explicitly pinned.
-- Numbers: preserve as-parsed; prohibit floats unless rules specified.
-- Whitespace: none (minified JSON).
-- Newlines: no trailing newline.
-- Encoding: exact UTF-8 bytes.
+**Normative canonicalization rules:** Defined exclusively by `spec/canonicalization/canonicalization_rules_v1.md` (ruleset ID: `aaa-canonical-json-v1`). Implementations MUST follow that document exactly. The rules are summarized here for reference but the canonical source is the pinned artifact.
+
+Summary: lexicographic key sort, compact separators, UTF-8, no trailing newline, no BOM, no Unicode normalization, `ensure_ascii=False`.
 
 **Output:** `canonical_bytes`
 
@@ -138,16 +133,9 @@
 **Invariant:**
 - Precedence table is a pinned artifact.
 
-**Example precedence (pin exactly):**
-1. `ENCODING_ERROR`
-2. `PARSE_ERROR`
-3. `SCHEMA_VALIDATION_ERROR`
-4. `CANONICALIZATION_ERROR`
-5. `HASH_ERROR`
-6. `GOVERNANCE_INCOMPATIBLE`
-7. `POLICY_VIOLATION`
+**Normative precedence:** Defined exclusively by `spec/failure/failure_precedence_v1.json`. Implementations MUST match this order exactly. No alternative ordering is conformant.
 
-**EAL reference:** `aaa_eal.core.EAL_PRECEDENCE` (13-element ordered list) and `ordered_reason_codes()`.
+**EAL reference:** `aaa_eal.core.EAL_PRECEDENCE` (13-element ordered list) and `ordered_reason_codes()`. The EAL precedence MUST remain identical to the pinned artifact.
 
 ### M8 -- Receipt Builder
 
@@ -166,22 +154,17 @@
 - `compat_class` (if applicable)
 - `ts_rfc3339` (timestamp)
 
-**Determinism note:**
+**Determinism policy (normative):**
 
-Timestamps break bitwise determinism across runs. Two compliant patterns:
+Timestamps break bitwise determinism across runs. AAA v1 mandates **Pattern A**:
 
-**Pattern A (recommended): Timestamp outside determinism domain**
-- Receipt has:
-  - `receipt_body` (deterministic)
-  - `receipt_meta` (non-deterministic: timestamp, host)
-- Hash/sign `receipt_body` only.
+- `receipt_body` is **deterministic** and is the only portion hashed/signed.
+- `receipt_meta` MAY include non-deterministic fields (timestamp, host) and MUST NOT be hashed/signed.
+- Timestamps MUST NOT appear in `receipt_body`.
 
-**Pattern B: Timestamp pinned input**
-- Timestamp is part of IC and therefore canonicalized. Rarely desired.
+Pattern A is the sole conformant strategy for AAA v1 Levels A, B, and C. Implementations embedding timestamps in the deterministic receipt body are **non-conformant**.
 
-Pick one and pin. Default: Pattern A.
-
-**EAL reference:** `aaa_eal.core.evaluate_validation()` returns a report dict (the receipt). The existing EAL uses a Pattern A variant -- `evaluated_epoch` is deterministic, but the receipt itself does not include a timestamp field (determinism by omission).
+**EAL reference:** `aaa_eal.core.evaluate_validation()` returns a report dict (the receipt body). The EAL implementation conforms to Pattern A -- `evaluated_epoch` is deterministic, and no timestamp field is included in the receipt body.
 
 ### M9 -- Receipt Hash + (Optional) Signature
 

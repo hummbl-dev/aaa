@@ -1,0 +1,65 @@
+{
+  "$schema": "https://hummbl.dev/schemas/eal.failure_codes.v1.json",
+  "version": "1.0.0",
+  "description": "Enumerated failure codes and output classifications for AAA v1.",
+  "codes": {
+    "E_OK_VALID": {
+      "classification": "VALID",
+      "meaning": "All required checks pass."
+    },
+    "E_INPUT_MALFORMED": {
+      "classification": "INDETERMINATE",
+      "meaning": "Input JSON structure cannot be parsed or required top-level keys are missing."
+    },
+    "E_CONTRACT_VERSION_COLLISION": {
+      "classification": "INVALID",
+      "meaning": "Same contract version identifier resolves to different bytes."
+    },
+    "E_SIG_INVALID": {
+      "classification": "INVALID",
+      "meaning": "Signature verification failed."
+    },
+    "E_HASH_MISMATCH": {
+      "classification": "INVALID",
+      "meaning": "Receipt/evidence hash mismatch."
+    },
+    "E_EVIDENCE_MISSING": {
+      "classification": "INDETERMINATE",
+      "meaning": "Required evidence for a deterministic decision is missing."
+    },
+    "E_EPOCH_AMBIGUOUS": {
+      "classification": "INDETERMINATE",
+      "meaning": "Receipt cannot be mapped to a unique authoritative contract/epoch."
+    },
+    "E_ACTION_OUT_OF_SPACE": {
+      "classification": "INVALID",
+      "meaning": "Receipt includes action not present in A(C_e)."
+    },
+    "E_BOUNDARY_MISMATCH": {
+      "classification": "INVALID",
+      "meaning": "Recomputed B(C_e, action, params) differs from receipt boundary outcome."
+    },
+    "E_LOG_CHAIN_BREAK": {
+      "classification": "INVALID",
+      "meaning": "Supplied log hash-chain integrity fails."
+    },
+    "E_LOG_SEQUENCE_GAP": {
+      "classification": "INVALID",
+      "meaning": "Supplied log sequence monotonicity/continuity fails."
+    },
+    "E_REPLAY_DETECTED": {
+      "classification": "INVALID",
+      "meaning": "Duplicate receipt identifier detected in provided ledger context."
+    },
+    "E_EPOCH_INVALIDATED": {
+      "classification": "INVALIDATED",
+      "meaning": "Execution valid under origin epoch is incompatible under target epoch."
+    }
+  },
+  "output_classifications": {
+    "VALID": {"exit_code": 0},
+    "INVALID": {"exit_code": 10},
+    "INVALIDATED": {"exit_code": 11},
+    "INDETERMINATE": {"exit_code": 12}
+  }
+}
