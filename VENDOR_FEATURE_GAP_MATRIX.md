@@ -1,12 +1,31 @@
 # Vendor Experimental Feature Gap Matrix
 
-**Generated:** 2026-02-28
-**Author:** claude-code (gap matrix handoff from codex REQUEST 22:03Z)
+**Generated:** 2026-03-01
+**Author:** codex (from claude-code gap matrix handoff + coordinator hardening pass)
 **Policy:** Value gate min speedup ratio = 0.20; manual security + operability gates required
+
+## Evidence Semantics (Probe vs Curated)
+
+This matrix intentionally separates two evidence layers:
+
+1. **Probe inventory** from `conformance/vendor_surface_evidence.latest.json` (what the automated surface scanner can directly detect).
+2. **Curated inventory** from vendor evaluation artifacts and receipts (what is actively tracked for promotion decisions).
+
+Latest probe snapshot (`2026-03-01T00:13:18+00:00`) reports:
+
+1. `openai/codex_cli = 38`
+2. `anthropic/claude_code_cli = 1` (`betas` umbrella flag)
+3. `google/gemini_cli = 1` (`experimental-acp`)
+4. `openrouter/openrouter_api = 0`
+5. `ollama/ollama_local = 0`
+
+Curated inventories in this document may be larger than probe counts when one probe flag expands into multiple evaluated settings (for example Anthropic `betas`).
 
 ## Anthropic Claude Code CLI (v2.1.63)
 
 ### Feature Inventory (16 total)
+
+Probe-level note: automated surface scanner reports `betas` as a single umbrella feature; curated Anthropic rows below are normalized from that umbrella into explicit evaluated settings.
 
 #### Currently Enabled (9) -- in production use
 
@@ -77,9 +96,9 @@ Promoted to default-on:      0 / 4   (  0%)
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| `experimental-acp` | **PENDING** | In inventory, awaiting pilot runs |
+| `experimental-acp` | **SURFACE-SCANNED** | Probe captured in latest vendor scan; pilot evaluation still pending |
 
-Action: `make vendor-scan` to collect baseline.
+Action: run pilot evaluation and generate scorecard receipts.
 
 ---
 
@@ -87,9 +106,9 @@ Action: `make vendor-scan` to collect baseline.
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| _(none inventoried)_ | **PENDING** | Awaiting capability scan |
+| _(none curated yet)_ | **SURFACE-SCANNED** | API key present and probe succeeded; capability inventory requires curation receipts |
 
-Action: `make vendor-scan` to enumerate features.
+Action: curate OpenRouter capability inventory and materialize receipts.
 
 ---
 
@@ -103,15 +122,16 @@ Action: `make vendor-scan` to enumerate features.
 
 ## Cross-Vendor Summary
 
-| Vendor | Surface | Features | Evaluated | Promoted | Status |
+| Vendor | Surface | Features (curated) | Evaluated | Promoted | Status |
 |--------|---------|----------|-----------|----------|--------|
 | Anthropic | claude_code_cli | 16 | 4 / 7 candidates | 0 | Phase 1 complete, Phase 2 queued |
 | OpenAI | codex_cli | 4 | 4 / 4 | 0 | Fully evaluated |
-| Google | gemini_cli | 1 | 0 / 1 | 0 | Pending evidence |
-| OpenRouter | openrouter_api | 0 | -- | -- | Pending scan |
+| Google | gemini_cli | 1 | 0 / 1 | 0 | Surface scanned, pilot pending |
+| OpenRouter | openrouter_api | 0 | -- | -- | Surface scanned, curation pending |
 | Ollama | ollama_local | 0 | -- | -- | Blocked (HUM-9) |
 
 **Total features inventoried:** 21
+**Total probe features detected (latest scan):** 40
 **Total features evaluated:** 8
 **Total features promoted:** 0
 
@@ -176,7 +196,7 @@ Action: `make vendor-scan` to enumerate features.
 | 2 | Re-pilot task_list_id with task-list-heavy workflow matrix | codex | Phase 1 cleanup |
 | 3 | Schedule manual security review for hold candidates | Reuben | Calendar |
 | 4 | Run Phase 2 pilots (fast_mode, prompt_suggestion, telemetry) | claude-code / codex | Phase 1 closure |
-| 5 | Run `make vendor-scan` for Gemini + OpenRouter | codex | None |
+| 5 | Curate Gemini/OpenRouter evidence into scorecard-ready receipts after scan | codex / claude-code | None |
 | 6 | Provision Mac Mini for Ollama evidence | Reuben | HUM-9 |
 
 ---
@@ -188,6 +208,9 @@ Action: `make vendor-scan` to enumerate features.
 - Gate config: [`conformance/vendor_experimental_feature_gates.json`](conformance/vendor_experimental_feature_gates.json)
 - Baselines: `conformance/vendor_receipts/anthropic_*_baseline_2026-02-28.json` (4 files)
 - Scorecards: `conformance/vendor_receipts/anthropic_*_scorecard_2026-02-28.json` (4 files)
+
+### Cross-vendor probe layer
+- Latest surface scan: [`conformance/vendor_surface_evidence.latest.json`](conformance/vendor_surface_evidence.latest.json)
 
 ### OpenAI Codex
 - Gate config: [`conformance/experimental_feature_gate.json`](conformance/experimental_feature_gate.json)
