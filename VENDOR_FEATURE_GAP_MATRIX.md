@@ -229,4 +229,4 @@ Execution scaffolds:
 - Gate config: [`conformance/experimental_feature_gate.json`](conformance/experimental_feature_gate.json)
 - Baseline snapshot: [`conformance/vendor_receipts/openai_codex_baseline_2026-02-28.json`](conformance/vendor_receipts/openai_codex_baseline_2026-02-28.json)
 - Scorecards: `conformance/vendor_receipts/openai_codex_*_scorecard_2026-02-28.json` (6 files)
-- Decision docs: [`founder_mode/docs/testing/CODEX_FEATURE_PROMOTION_DECISION.md`](/Users/others/founder_mode/docs/testing/CODEX_FEATURE_PROMOTION_DECISION.md), [`CODEX_FEATURE_ROLLOUT_DECISION.md`](/Users/others/founder_mode/docs/testing/CODEX_FEATURE_ROLLOUT_DECISION.md)
+- Decision docs: [`founder_mode/docs/testing/CODEX_FEATURE_PROMOTION_DECISION.md`](<repo>/docs/testing/CODEX_FEATURE_PROMOTION_DECISION.md), [`CODEX_FEATURE_ROLLOUT_DECISION.md`](<repo>/docs/testing/CODEX_FEATURE_ROLLOUT_DECISION.md)

@@ -3,25 +3,25 @@
   "mode": "baseline",
   "profile": "exp_pilot",
   "features": [],
-  "matrix_path": "/Users/others/founder_mode/docs/testing/codex_feature_task_matrix.json",
+  "matrix_path": "<repo>/docs/testing/codex_feature_task_matrix.json",
   "run_started_at": "2026-02-28T00:00:57.900939+00:00",
   "dry_run": false,
   "tasks": [
     {
       "task_id": "read_only_risk_review",
-      "cwd": "/Users/others/founder_mode",
+      "cwd": "<repo>",
       "timeout_sec": 900,
       "command": [
         "codex",
         "exec",
         "--cd",
-        "/Users/others/founder_mode",
+        "<repo>",
         "--skip-git-repo-check",
         "--json",
         "--color",
         "never",
         "--output-last-message",
-        "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/final.txt",
+        "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/final.txt",
         "--profile",
         "exp_pilot",
         "Review founder_mode/services/resilient_briefing.py and founder_mode/services/circuit_breaker.py for likely behavioral regressions and missing test coverage. Return concise findings with file paths."
@@ -32,25 +32,25 @@
       "json_event_count": 59,
       "final_text_chars": 1819,
       "expected_signal_match": true,
-      "stdout_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/stdout.jsonl",
-      "stderr_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/stderr.txt",
-      "final_text_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/final.txt"
+      "stdout_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/stdout.jsonl",
+      "stderr_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/stderr.txt",
+      "final_text_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/read_only_risk_review/final.txt"
     },
     {
       "task_id": "targeted_test_gap_scan",
-      "cwd": "/Users/others/founder_mode",
+      "cwd": "<repo>",
       "timeout_sec": 900,
       "command": [
         "codex",
         "exec",
         "--cd",
-        "/Users/others/founder_mode",
+        "<repo>",
         "--skip-git-repo-check",
         "--json",
         "--color",
         "never",
         "--output-last-message",
-        "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/final.txt",
+        "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/final.txt",
         "--profile",
         "exp_pilot",
         "Identify the top 3 missing unit tests around kill switch and scheduler behavior in founder_mode/services. Return each with a short rationale and likely test filename."
@@ -61,25 +61,25 @@
       "json_event_count": 61,
       "final_text_chars": 1177,
       "expected_signal_match": true,
-      "stdout_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/stdout.jsonl",
-      "stderr_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/stderr.txt",
-      "final_text_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/final.txt"
+      "stdout_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/stdout.jsonl",
+      "stderr_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/stderr.txt",
+      "final_text_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/targeted_test_gap_scan/final.txt"
     },
     {
       "task_id": "adapter_failure_mode_review",
-      "cwd": "/Users/others/founder_mode",
+      "cwd": "<repo>",
       "timeout_sec": 900,
       "command": [
         "codex",
         "exec",
         "--cd",
-        "/Users/others/founder_mode",
+        "<repo>",
         "--skip-git-repo-check",
         "--json",
         "--color",
         "never",
         "--output-last-message",
-        "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/final.txt",
+        "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/final.txt",
         "--profile",
         "exp_pilot",
         "Analyze founder_mode/integrations for graceful-failure gaps (timeouts, typed exceptions, retries). Provide concrete fix recommendations with file references."
@@ -90,25 +90,25 @@
       "json_event_count": 78,
       "final_text_chars": 4656,
       "expected_signal_match": true,
-      "stdout_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/stdout.jsonl",
-      "stderr_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/stderr.txt",
-      "final_text_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/final.txt"
+      "stdout_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/stdout.jsonl",
+      "stderr_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/stderr.txt",
+      "final_text_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/adapter_failure_mode_review/final.txt"
     },
     {
       "task_id": "briefing_pipeline_triage",
-      "cwd": "/Users/others/founder_mode",
+      "cwd": "<repo>",
       "timeout_sec": 900,
       "command": [
         "codex",
         "exec",
         "--cd",
-        "/Users/others/founder_mode",
+        "<repo>",
         "--skip-git-repo-check",
         "--json",
         "--color",
         "never",
         "--output-last-message",
-        "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/final.txt",
+        "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/final.txt",
         "--profile",
         "exp_pilot",
         "Trace the morning briefing generation path from scheduler entrypoint through rendering and list the most likely failure points in order. Include the exact modules involved."
@@ -119,9 +119,9 @@
       "json_event_count": 53,
       "final_text_chars": 3334,
       "expected_signal_match": true,
-      "stdout_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/stdout.jsonl",
-      "stderr_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/stderr.txt",
-      "final_text_path": "/Users/others/_state/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/final.txt"
+      "stdout_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/stdout.jsonl",
+      "stderr_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/stderr.txt",
+      "final_text_path": "<local-state>/codex_feature_pilot/baseline_none_20260228T000057Z/briefing_pipeline_triage/final.txt"
     }
   ],
   "run_finished_at": "2026-02-28T00:06:38.293606+00:00"

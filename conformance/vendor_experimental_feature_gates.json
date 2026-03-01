@@ -146,14 +146,14 @@
         }
       ],
       "source_receipts": {
-        "baseline": "/Users/others/_state/codex_feature_pilot/latest-baseline.json",
+        "baseline": "<local-state>/codex_feature_pilot/latest-baseline.json",
         "scorecards": [
-          "/Users/others/_state/codex_feature_pilot/latest-scorecard-multi_agent.json",
-          "/Users/others/_state/codex_feature_pilot/latest-scorecard-apps.json",
-          "/Users/others/_state/codex_feature_pilot/latest-scorecard-js_repl.json",
-          "/Users/others/_state/codex_feature_pilot/latest-scorecard-prevent_idle_sleep.json",
-          "/Users/others/_state/codex_feature_pilot/latest-scorecard-multi_agent-apps.json",
-          "/Users/others/_state/codex_feature_pilot/latest-scorecard-multi_agent-prevent_idle_sleep.json"
+          "<local-state>/codex_feature_pilot/latest-scorecard-multi_agent.json",
+          "<local-state>/codex_feature_pilot/latest-scorecard-apps.json",
+          "<local-state>/codex_feature_pilot/latest-scorecard-js_repl.json",
+          "<local-state>/codex_feature_pilot/latest-scorecard-prevent_idle_sleep.json",
+          "<local-state>/codex_feature_pilot/latest-scorecard-multi_agent-apps.json",
+          "<local-state>/codex_feature_pilot/latest-scorecard-multi_agent-prevent_idle_sleep.json"
         ]
       },
       "decision_summary": "No tested Codex experimental feature is promoted to default-on; stable profile remains authoritative."
