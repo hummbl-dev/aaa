@@ -265,6 +265,19 @@ If kernel attempts direct tool invocation:
 
 **Expected:** Automatic conformance failure.
 
+### TV-P3 -- Timestamp in Receipt Body
+
+**Procedure:**
+1. Run any TV-A vector.
+2. Inspect `receipt_body` output.
+
+**Expected:**
+- `receipt_body` MUST NOT contain any timestamp field.
+- Timestamps are permitted only in `receipt_meta`.
+- Presence of a timestamp key (e.g., `timestamp`, `created_at`, `ts_rfc3339`) in `receipt_body` is an automatic conformance failure.
+
+This enforces AAA v1 Pattern A determinism.
+
 ---
 
 ## 10. Required Public Artifacts
@@ -296,6 +309,8 @@ Implementation passes AAA-TVS-V1 if:
 
 ## 12. Mapping to Existing EAL Conformance Fixtures
 
+The normative test vector manifest is at `spec/fixtures/TVS_V1_MANIFEST.json`. That file enumerates exact file paths and expected hashes for all executable vectors.
+
 The existing `conformance/fixtures/` directory implements a superset of these vectors:
 
 | AAA-TVS Vector | EAL Fixture(s) | Notes |
@@ -314,6 +329,7 @@ The existing `conformance/fixtures/` directory implements a superset of these ve
 | TV-C3 (Epoch anchoring) | T4, T6-T10 | Temporal validation fixtures |
 | TV-P1 (Hidden state) | `verify_conformance.py` | Pure functions, no mutable state |
 | TV-P2 (No tool invocation) | By design | Kernel has no tool dependencies |
+| TV-P3 (No timestamp in body) | All T1-T10, R1-R5 | Receipt body has no timestamp field |
 
 ---
 

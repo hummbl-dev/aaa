@@ -106,18 +106,16 @@ Intent Contracts MUST be:
 
 ## 5. Canonicalization Requirements
 
-The implementation MUST:
+The normative canonicalization rules are defined in `spec/canonicalization/canonicalization_rules_v1.md` (ruleset ID: `aaa-canonical-json-v1`). That document is the single authoritative source. Implementations MUST follow it exactly.
 
-1. Define ordering rules (lexicographic key sorting).
-2. Define whitespace normalization (compact/minified JSON).
-3. Define encoding (UTF-8 required).
-4. Define numeric normalization rules.
-5. Exclude trailing newline variance.
-6. Specify deterministic hash algorithm.
+Summary of requirements:
 
-**Required:**
-- SHA-256 or stronger.
-- Hash over canonical byte stream only.
+1. Lexicographic key sorting (Unicode codepoint).
+2. Compact/minified JSON (no whitespace).
+3. UTF-8 encoding, no BOM.
+4. No Unicode normalization (NFC/NFD).
+5. No trailing newline in canonical byte stream.
+6. SHA-256 hash over canonical byte stream only.
 
 Reference implementation: `aaa_eal.core.canonical_json_bytes()`.
 
@@ -127,8 +125,8 @@ Reference implementation: `aaa_eal.core.canonical_json_bytes()`.
 
 A compliant implementation MUST:
 
-1. Define enumerated failure codes.
-2. Enforce precedence ordering.
+1. Implement the enumerated failure codes defined in `spec/failure/failure_codes_v1.json`.
+2. Enforce precedence ordering as defined in `spec/failure/failure_precedence_v1.json`. This is the single source of truth for precedence; implementations MUST match it exactly.
 3. Guarantee deterministic failure classification.
 4. Emit failure receipts identical across runs.
 
@@ -138,26 +136,37 @@ Failure codes MUST NOT depend on:
 - Non-deterministic randomness.
 - External service availability (unless declared).
 
-Reference taxonomy: `conformance/FAILURE_CODES.md` (13 codes, 4 output classes).
+Reference taxonomy: `conformance/FAILURE_CODES.md` (13 codes, 4 output classes). The machine-readable equivalents are `spec/failure/failure_codes_v1.json` and `spec/failure/failure_precedence_v1.json`.
 
 ---
 
 ## 7. Receipt Requirements
 
-Every enforcement decision MUST emit a receipt containing:
+AAA v1 mandates **Pattern A** for receipt determinism:
+
+- `receipt_body` is **deterministic** and is the only portion hashed/signed.
+- `receipt_meta` MAY include non-deterministic fields (timestamp, host) and MUST NOT be hashed/signed.
+- Timestamps MUST NOT appear in `receipt_body`.
+
+The `receipt_body` MUST contain:
 
 - Intent Contract hash
 - Canonical artifact hash
 - Failure code (or success code)
 - Governance version pin
-- Timestamp (RFC3339)
 - Implementation version
 - Deterministic receipt schema version
 
-For Level B+:
-- Cryptographic signature required.
+The `receipt_meta` MAY contain:
 
-Receipts MUST be reproducible and verifiable.
+- Timestamp (RFC3339)
+- Host identifier
+- Invocation context
+
+For Level B+:
+- Cryptographic signature over `receipt_body` required.
+
+Receipts MUST be reproducible: identical inputs MUST produce identical `receipt_body` bytes across runs, machines, and locales.
 
 ---
 

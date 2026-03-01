@@ -1,0 +1,82 @@
+name: aaa-spec-suite
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: python -m pip install --upgrade pip
+
+      - name: Verify conformance suite (pass 1)
+        run: |
+          set -euo pipefail
+          python3 conformance/verify_conformance.py | tee /tmp/aaa_run1.txt
+
+      - name: Verify conformance suite (pass 2 - replay determinism)
+        run: |
+          set -euo pipefail
+          python3 conformance/verify_conformance.py | tee /tmp/aaa_run2.txt
+
+      - name: Compare outputs for determinism
+        run: |
+          set -euo pipefail
+          diff -u /tmp/aaa_run1.txt /tmp/aaa_run2.txt
+
+      - name: Verify spec test vectors
+        run: |
+          set -euo pipefail
+          python3 spec/verify_test_vectors.py
+
+      - name: Verify pinned artifact integrity
+        run: |
+          set -euo pipefail
+          python3 spec/verify_pinned_artifacts.py
+
+      - name: Verify no tool invocation in kernel
+        run: |
+          set -euo pipefail
+          # TV-P2: kernel must not import subprocess, os.system, or shutil
+          if grep -rn 'import subprocess\|import shutil\|os\.system\|os\.popen\|os\.exec' aaa_eal/; then
+            echo "FAIL: kernel contains tool invocation imports (TV-P2 violation)"
+            exit 1
+          fi
+          echo "PASS: no tool invocation imports in kernel"
+
+      - name: Verify no timestamp in receipt body
+        run: |
+          set -euo pipefail
+          # TV-P3: evaluate_validation() return dict must not contain timestamp keys
+          if grep -n '"timestamp"\|"created_at"\|"ts_rfc3339"\|"evaluated_at"' aaa_eal/core.py | grep -v '#\|def\|"""'; then
+            echo "FAIL: receipt body may contain timestamp field (TV-P3 violation)"
+            exit 1
+          fi
+          echo "PASS: no timestamp keys in receipt body builder"
+
+      - name: Verify precedence consistency
+        run: |
+          set -euo pipefail
+          python3 -c "
+          import json, sys
+          sys.path.insert(0, '.')
+          from aaa_eal.core import EAL_PRECEDENCE
+
+          with open('spec/failure/failure_precedence_v1.json') as f:
+              pinned = json.load(f)['precedence']
+
+          if list(EAL_PRECEDENCE) != pinned:
+              print('FAIL: EAL_PRECEDENCE != pinned artifact')
+              print('  EAL:', list(EAL_PRECEDENCE))
+              print('  PIN:', pinned)
+              sys.exit(1)
+          print('PASS: precedence matches pinned artifact')
+          "

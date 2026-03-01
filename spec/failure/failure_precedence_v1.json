@@ -1,0 +1,20 @@
+{
+  "$schema": "https://hummbl.dev/schemas/eal.failure_precedence.v1.json",
+  "version": "1.0.0",
+  "description": "Single-source-of-truth failure precedence for AAA v1. Lower index = higher precedence. Implementations MUST match this order exactly.",
+  "precedence": [
+    "E_INPUT_MALFORMED",
+    "E_CONTRACT_VERSION_COLLISION",
+    "E_SIG_INVALID",
+    "E_HASH_MISMATCH",
+    "E_EVIDENCE_MISSING",
+    "E_EPOCH_AMBIGUOUS",
+    "E_ACTION_OUT_OF_SPACE",
+    "E_BOUNDARY_MISMATCH",
+    "E_LOG_CHAIN_BREAK",
+    "E_LOG_SEQUENCE_GAP",
+    "E_REPLAY_DETECTED",
+    "E_EPOCH_INVALIDATED",
+    "E_OK_VALID"
+  ]
+}
