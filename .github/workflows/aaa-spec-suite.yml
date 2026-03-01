@@ -63,6 +63,11 @@ jobs:
           fi
           echo "PASS: no timestamp keys in receipt body builder"
 
+      - name: Verify kernel import allowlist (AST)
+        run: |
+          set -euo pipefail
+          python3 spec/verify_kernel_imports.py
+
       - name: Verify precedence consistency
         run: |
           set -euo pipefail

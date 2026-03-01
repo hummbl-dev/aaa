@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "description": "Allowed stdlib modules for AAA kernel files. Only these modules may be imported in kernel-scope files. This is enforced by spec/verify_kernel_imports.py.",
+  "scope": [
+    "aaa_eal/core.py",
+    "aaa_eal/__init__.py"
+  ],
+  "allowed_modules": [
+    "__future__",
+    "dataclasses",
+    "hashlib",
+    "json",
+    "typing"
+  ]
+}
