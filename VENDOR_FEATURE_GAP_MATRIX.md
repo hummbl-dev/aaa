@@ -198,7 +198,7 @@ Inventory evidence: [`conformance/vendor_receipts/openrouter_openrouter_api_inve
 | 2 | Re-pilot task_list_id with task-list-heavy workflow matrix | codex | Phase 1 cleanup |
 | 3 | Schedule manual security review for hold candidates | Reuben | Calendar |
 | 4 | Run Phase 2 pilots (fast_mode, prompt_suggestion, telemetry) | claude-code / codex | Phase 1 closure |
-| 5 | Curate Gemini/OpenRouter evidence into scorecard-ready receipts after scan | codex / claude-code | None |
+| 5 | ~~Curate Gemini/OpenRouter evidence into scorecard-ready receipts after scan~~ **DONE** | codex | Completed 2026-03-01 |
 | 6 | Provision Mac Mini for Ollama evidence | Reuben | HUM-9 |
 
 Execution scaffolds:
@@ -222,6 +222,8 @@ Execution scaffolds:
 - OpenRouter inventory receipt: [`conformance/vendor_receipts/openrouter_openrouter_api_inventory_2026-03-01.json`](conformance/vendor_receipts/openrouter_openrouter_api_inventory_2026-03-01.json)
 - Gemini pilot plan: [`conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md`](conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md)
 - OpenRouter curation plan: [`conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md`](conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md)
+- Gemini scorecard scaffold: [`conformance/vendor_receipts/google_gemini_cli_experimental_acp_scorecard_scaffold_2026-03-01.json`](conformance/vendor_receipts/google_gemini_cli_experimental_acp_scorecard_scaffold_2026-03-01.json)
+- OpenRouter curation receipt: [`conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_receipt_2026-03-01.json`](conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_receipt_2026-03-01.json)
 
 ### OpenAI Codex
 - Gate config: [`conformance/experimental_feature_gate.json`](conformance/experimental_feature_gate.json)

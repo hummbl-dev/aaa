@@ -1,0 +1,31 @@
+{
+  "schema_version": "eal.vendor.feature.scorecard.v1",
+  "vendor_id": "google",
+  "surface_id": "gemini_cli",
+  "feature_slug": "experimental-acp",
+  "recorded_at": "2026-03-01T06:00:00+00:00",
+  "audited_version": "0.29.7",
+  "task_count_scored": 0,
+  "task_count_excluded_confounds": 0,
+  "confounded": false,
+  "scored_tasks": [],
+  "speedup_ratio": 0.0,
+  "gates": {
+    "reliability_gate": "not-tested",
+    "value_gate": "not-tested",
+    "signal_quality_gate": "not-tested",
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  },
+  "decision": "not-tested",
+  "decision_rationale": "Scorecard scaffold generated from curated inventory evidence. Pilot execution pending.",
+  "next_steps": [
+    "Run pilot tasks from google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md",
+    "Populate scored_tasks and gate outcomes",
+    "Re-evaluate promotion decision with measured speedup_ratio"
+  ],
+  "evidence_links": [
+    "conformance/vendor_receipts/google_gemini_cli_inventory_2026-03-01.json",
+    "conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md"
+  ]
+}

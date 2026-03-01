@@ -1,0 +1,25 @@
+{
+  "schema_version": "eal.vendor.inventory.curation.receipt.v1",
+  "vendor_id": "openrouter",
+  "surface_id": "openrouter_api",
+  "recorded_at": "2026-03-01T06:00:00+00:00",
+  "source_inventory_receipt": "conformance/vendor_receipts/openrouter_openrouter_api_inventory_2026-03-01.json",
+  "source_plan": "conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md",
+  "curation_status": "scorecard-ready",
+  "candidate_features": [],
+  "excluded_from_scoring": [
+    {
+      "reason": "No explicit experimental feature surface was detected in the initial probe inventory.",
+      "action": "Keep curation checklist active and re-scan when OpenRouter feature signals are observable."
+    }
+  ],
+  "gates": {
+    "reliability_gate": "not-tested",
+    "value_gate": "not-tested",
+    "signal_quality_gate": "not-tested",
+    "security_gate": "manual-review-required",
+    "operability_gate": "manual-rollback-drill-required"
+  },
+  "decision": "inventory-curated-no-scorecard",
+  "decision_rationale": "Curation is complete and evidence is structured for scoring, but there are no testable experimental feature candidates yet."
+}
