@@ -2,7 +2,7 @@
 
 **Project:** EAL-AAA v0.2.0 (Spec Draft)
 **Sprint focus:** Multi-vendor feature evaluation, governance hardening
-**Updated by:** claude-code (oauth-impl)
+**Updated by:** codex (coordinator)
 
 ## Shipped Today
 
@@ -34,17 +34,26 @@ Evaluated 4 Anthropic Claude Code CLI features against promotion policy (min 20%
 
 ## In Progress
 
-_Nothing actively in progress._
+### MVS-2026-03-01A -- Multi-vendor evidence closure
+
+Control packet: `/Users/others/_state/coordination/MULTI_VENDOR_SPRINT_2026-03-01A.md`
+
+Current execution lanes:
+
+1. Anthropic probe-vs-curated normalization
+2. Gemini evidence lane (`experimental-acp`) from scanned baseline to evaluated classification
+3. OpenRouter capability inventory curation
+4. Matrix/sprint synchronization with repo-local evidence links
 
 ## Next Up
 
 ### P0 -- Immediate
 
 1. **Vendor evidence collection (3 pending)**
-   - Google Gemini CLI (v0.29.7): 1 feature in inventory, awaiting pilot
-   - OpenRouter API: empty inventory, awaiting capability scan
+   - Google Gemini CLI (v0.29.7): `vendor-scan` captured `experimental-acp`; pilot evidence still pending
+   - OpenRouter API: `vendor-scan` confirms surface availability; curated capability inventory still empty
    - Ollama Local (v0.15.4): empty inventory, daemon_unreachable on this machine
-   - Action: `make vendor-scan` or `make vendor-scan-sync`
+   - Action: convert scan output into curated, scorecard-ready receipts and matrix entries
    - Note: Ollama blocked until Mac Mini (HUM-9) is provisioned
 
 ### P1 -- This Week
