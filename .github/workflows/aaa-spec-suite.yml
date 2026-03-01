@@ -16,6 +16,7 @@ jobs:
           python-version: '3.11'
 
       - run: python -m pip install --upgrade pip
+      - run: python -m pip install jsonschema
 
       - name: Verify conformance suite (pass 1)
         run: |
