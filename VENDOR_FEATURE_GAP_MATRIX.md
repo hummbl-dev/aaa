@@ -201,6 +201,11 @@ Inventory evidence: [`conformance/vendor_receipts/openrouter_openrouter_api_inve
 | 5 | Curate Gemini/OpenRouter evidence into scorecard-ready receipts after scan | codex / claude-code | None |
 | 6 | Provision Mac Mini for Ollama evidence | Reuben | HUM-9 |
 
+Execution scaffolds:
+
+1. Gemini pilot: [`conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md`](conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md)
+2. OpenRouter curation: [`conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md`](conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md)
+
 ---
 
 ## Evidence Index
@@ -215,6 +220,8 @@ Inventory evidence: [`conformance/vendor_receipts/openrouter_openrouter_api_inve
 - Latest surface scan: [`conformance/vendor_surface_evidence.latest.json`](conformance/vendor_surface_evidence.latest.json)
 - Gemini inventory receipt: [`conformance/vendor_receipts/google_gemini_cli_inventory_2026-03-01.json`](conformance/vendor_receipts/google_gemini_cli_inventory_2026-03-01.json)
 - OpenRouter inventory receipt: [`conformance/vendor_receipts/openrouter_openrouter_api_inventory_2026-03-01.json`](conformance/vendor_receipts/openrouter_openrouter_api_inventory_2026-03-01.json)
+- Gemini pilot plan: [`conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md`](conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md)
+- OpenRouter curation plan: [`conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md`](conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md)
 
 ### OpenAI Codex
 - Gate config: [`conformance/experimental_feature_gate.json`](conformance/experimental_feature_gate.json)

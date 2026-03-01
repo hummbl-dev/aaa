@@ -54,6 +54,9 @@ Current execution lanes:
    - OpenRouter API: scan + inventory receipt captured; curated capability inventory still empty
    - Ollama Local (v0.15.4): empty inventory, daemon_unreachable on this machine
    - Action: convert inventory receipts into scorecard-ready evaluation artifacts and matrix decisions
+   - Execution plans:
+     - `conformance/vendor_receipts/google_gemini_cli_experimental_acp_pilot_plan_2026-03-01.md`
+     - `conformance/vendor_receipts/openrouter_openrouter_api_inventory_curation_plan_2026-03-01.md`
    - Note: Ollama blocked until Mac Mini (HUM-9) is provisioned
 
 ### P1 -- This Week
