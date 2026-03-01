@@ -1,4 +1,4 @@
-.PHONY: verify verify-repeat verify-tvs verify-pinned verify-precedence cli-smoke feature-gate feature-gate-live vendor-scan vendor-scan-sync protection-audit release-check release-receipt cut-release
+.PHONY: verify verify-repeat verify-tvs verify-pinned verify-precedence verify-imports cli-smoke feature-gate feature-gate-live vendor-scan vendor-scan-sync protection-audit release-check release-receipt cut-release
 
 verify:
 	python3 conformance/verify_conformance.py
@@ -23,6 +23,9 @@ verify-precedence:
 	ok = list(EAL_PRECEDENCE) == pinned; \
 	print('PASS' if ok else 'FAIL: EAL_PRECEDENCE != pinned artifact'); \
 	sys.exit(0 if ok else 1)"
+
+verify-imports:
+	python3 spec/verify_kernel_imports.py
 
 cli-smoke:
 	./eal verify-receipt --help >/dev/null
@@ -51,6 +54,7 @@ release-check:
 	$(MAKE) verify-tvs
 	$(MAKE) verify-pinned
 	$(MAKE) verify-precedence
+	$(MAKE) verify-imports
 	$(MAKE) feature-gate
 	$(MAKE) protection-audit
 

@@ -36,7 +36,7 @@ Evaluated 4 Anthropic Claude Code CLI features against promotion policy (min 20%
 
 ### MVS-2026-03-01A -- Multi-vendor evidence closure
 
-Control packet: `/Users/others/_state/coordination/MULTI_VENDOR_SPRINT_2026-03-01A.md`
+Control packet: `<local-state>/coordination/MULTI_VENDOR_SPRINT_2026-03-01A.md`
 
 Current execution lanes:
 
